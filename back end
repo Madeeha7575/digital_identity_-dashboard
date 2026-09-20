@@ -1,1 +1,28 @@
+from flask import Flask, jsonify
+import sqlite3
 
+app = Flask(__name__)
+
+# --- Helper function ---
+def query_db(query, args=(), one=False):
+    conn = sqlite3.connect("people.db")
+    cursor = conn.cursor()
+    cursor.execute(query, args)
+    rv = cursor.fetchall()
+    conn.close()
+    return (rv[0] if rv else None) if one else rv
+
+# --- Profile API ---
+@app.route("/api/profile/<name>")
+def get_profile(name):
+    rows = query_db("SELECT * FROM profiles WHERE name=?", (name,))
+    return jsonify({"name": name, "profile": rows})
+
+# --- Workspace API ---
+@app.route("/api/workspace/<name>")
+def get_workspace(name):
+    rows = query_db("SELECT * FROM workspace WHERE name=?", (name,))
+    return jsonify({"name": name, "workspace": rows})
+
+# --- Achievements API ---
+@app.route("/api/achievements
