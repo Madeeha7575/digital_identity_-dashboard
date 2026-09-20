@@ -1,1 +1,64 @@
+import React, { useState, useEffect } from "react";
+
+function App() {
+  const [profile, setProfile] = useState(null);
+  const [workspace, setWorkspace] = useState(null);
+  const [achievements, setAchievements] = useState(null);
+
+  // Example: fetch profile data
+  useEffect(() => {
+    fetch("http://localhost:5000/api/profile/Madeeha")
+      .then((res) => res.json())
+      .then((data) => setProfile(data));
+  }, []);
+
+  // Example: fetch workspace data
+  useEffect(() => {
+    fetch("http://localhost:5000/api/workspace/Madeeha")
+      .then((res) => res.json())
+      .then((data) => setWorkspace(data));
+  }, []);
+
+  // Example: fetch achievements data
+  useEffect(() => {
+    fetch("http://localhost:5000/api/achievements/Madeeha")
+      .then((res) => res.json())
+      .then((data) => setAchievements(data));
+  }, []);
+
+  return (
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+      <h1>DigIdentity Dashboard</h1>
+
+      <section>
+        <h2>Profile</h2>
+        {profile ? (
+          <pre>{JSON.stringify(profile, null, 2)}</pre>
+        ) : (
+          <p>Loading profile...</p>
+        )}
+      </section>
+
+      <section>
+        <h2>Workspace</h2>
+        {workspace ? (
+          <pre>{JSON.stringify(workspace, null, 2)}</pre>
+        ) : (
+          <p>Loading workspace...</p>
+        )}
+      </section>
+
+      <section>
+        <h2>Achievements</h2>
+        {achievements ? (
+          <pre>{JSON.stringify(achievements, null, 2)}</pre>
+        ) : (
+          <p>Loading achievements...</p>
+        )}
+      </section>
+    </div>
+  );
+}
+
+export default App;
 
